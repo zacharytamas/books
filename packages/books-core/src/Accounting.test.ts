@@ -24,13 +24,13 @@ describe('Accounting class', () => {
     expectAccountingEquationSatisfied(accounting);
   });
 
-  xtest('Cash account is considered part of Assets', () => {});
-  xtest('Common Stock is considered part of Equity', () => {});
-
   test('Selling common stock', () => {
     const amount = 500;
 
-    accounting.addTransaction({ cash: amount, commonStock: amount });
+    accounting.addTransaction({
+      cash: amount,
+      commonStock: amount
+    });
 
     expect(accounting.cash).toEqual(amount);
     expect(accounting.assets).toEqual(amount);
