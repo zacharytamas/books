@@ -20,6 +20,7 @@ describe('Accounting class', () => {
   });
 
   afterEach(() => {
+    // Above all the Accounting Equation should always be satisfied.
     expectAccountingEquationSatisfied(accounting);
   });
 
@@ -33,20 +34,23 @@ describe('Accounting class', () => {
     });
   });
 
-  test('Selling common stock', () => {
-    const amount = 500;
+  describe('Selling common stock', () => {
+    it('should increase cash and common stock values', () => {
+      const amount = 500;
 
-    accounting.addTransaction({
-      amount,
-      assetAccount: AssetAccounts.cash,
-      equityAccount: EquityAccounts.commonStock
-    });
+      accounting.addTransaction({
+        amount,
+        assetAccount: AssetAccounts.cash,
+        equityAccount: EquityAccounts.commonStock
+      });
 
-    expectKeyValues(accounting, {
-      assets: amount,
-      cash: amount,
-      commonStock: amount,
-      equity: amount
+      expectKeyValues(accounting, {
+        assets: amount,
+        cash: amount,
+        commonStock: amount,
+        equity: amount,
+        liabilities: 0 // To confirm this value did not change.
+      });
     });
   });
 });
