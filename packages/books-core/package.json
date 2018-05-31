@@ -1,0 +1,11 @@
+{
+  "name": "@zacharytamas/books-core",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "jest": "^23.1.0",
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.4"
+  }
+}

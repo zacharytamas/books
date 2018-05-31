@@ -1,0 +1,31 @@
+{
+  "name": "@zacharytamas/books",
+  "version": "0.1.0",
+  "description":
+    "A monorepo of utilities for financial accounting built as a learning aid.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage"
+  },
+  "jest": {
+    "testRegex": "packages/.*/src/.*\\.(test|spec)\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    }
+  },
+  "author": "Zachary Jones <me@zacharytamas.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@thorough/dev-configs": "^0.1.1",
+    "@types/jest": "^22.2.3",
+    "jest": "^23.1.0",
+    "lerna": "^2.11.0",
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.4"
+  }
+}
