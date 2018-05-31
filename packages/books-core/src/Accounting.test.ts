@@ -1,8 +1,14 @@
-import { Accounting } from './Accounting';
+import { Accounting, AssetAccounts, EquityAccounts } from './Accounting';
 
 function expectAccountingEquationSatisfied(accounting: Accounting) {
   expect(accounting.assets).toEqual(
     accounting.liabilities + accounting.equity
+  );
+}
+
+function expectKeyValues(accounting: Accounting, obj: {}) {
+  Object.keys(obj).forEach(key =>
+    expect(accounting[key]).toEqual(obj[key])
   );
 }
 
@@ -18,23 +24,29 @@ describe('Accounting class', () => {
   });
 
   test('Initial values', () => {
-    expect(accounting.assets).toEqual(0);
-    expect(accounting.liabilities).toEqual(0);
-    expect(accounting.equity).toEqual(0);
-    expectAccountingEquationSatisfied(accounting);
+    expectKeyValues(accounting, {
+      assets: 0,
+      cash: 0,
+      commonStock: 0,
+      equity: 0,
+      liabilities: 0
+    });
   });
 
   test('Selling common stock', () => {
     const amount = 500;
 
     accounting.addTransaction({
-      cash: amount,
-      commonStock: amount
+      amount,
+      assetAccount: AssetAccounts.cash,
+      equityAccount: EquityAccounts.commonStock
     });
 
-    expect(accounting.cash).toEqual(amount);
-    expect(accounting.assets).toEqual(amount);
-    expect(accounting.equity).toEqual(amount);
-    expect(accounting.commonStock).toEqual(amount);
+    expectKeyValues(accounting, {
+      assets: amount,
+      cash: amount,
+      commonStock: amount,
+      equity: amount
+    });
   });
 });

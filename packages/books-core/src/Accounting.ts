@@ -1,17 +1,26 @@
 interface ITransaction {
-  cash: number;
-  commonStock: number;
+  assetAccount: AssetAccounts;
+  equityAccount?: EquityAccounts;
+  amount: number;
+}
+
+export enum AssetAccounts {
+  cash = 'cash'
+}
+
+export enum LiabilityAccounts {}
+
+export enum EquityAccounts {
+  commonStock = 'commonStock'
 }
 
 export class Accounting {
   public get assets() {
-    const { assets } = this.valueCache;
-    return assets || (this.valueCache.assets = this.cash);
+    return this.getOrSetCache('assets', () => this.cash);
   }
 
   public get equity() {
-    const { equity } = this.valueCache;
-    return equity || (this.valueCache.equity = this.commonStock);
+    return this.getOrSetCache('equity', () => this.commonStock);
   }
 
   public cash: number = 0;
@@ -21,11 +30,17 @@ export class Accounting {
   private valueCache: { [key: string]: number } = {};
 
   addTransaction(details: ITransaction) {
-    const { cash, commonStock } = details;
+    const { assetAccount, equityAccount, amount } = details;
 
-    this.cash += cash;
-    this.commonStock += commonStock;
+    this[assetAccount] += amount;
+    this[equityAccount] += amount;
+
     this.clearValueCache();
+  }
+
+  private getOrSetCache(key: string, valueFunc: () => number) {
+    const cachedValue = this.valueCache[key];
+    return cachedValue || (this.valueCache[key] = valueFunc());
   }
 
   private clearValueCache() {
