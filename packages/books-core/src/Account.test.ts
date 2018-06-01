@@ -1,6 +1,8 @@
 import { Account } from './Account';
 
 const TEST_ACCOUNT_NAME = 'My Account';
+const TRANSACTION_1 = { amount: 500 };
+const TRANSACTION_2 = { amount: -250 };
 
 describe('Account', () => {
   let account: Account;
@@ -14,9 +16,6 @@ describe('Account', () => {
   });
 
   test('balance updates when adding transactions', () => {
-    const TRANSACTION_1 = { amount: 500 };
-    const TRANSACTION_2 = { amount: -250 };
-
     // For sanity, check that the account has a balance of zero.
     expect(account.balance).toEqual(0);
 
@@ -27,5 +26,14 @@ describe('Account', () => {
     expect(account.balance).toEqual(
       0 + TRANSACTION_1.amount + TRANSACTION_2.amount
     );
+  });
+
+  test('account changes can be subscribed to', cb => {
+    account.subscribe(acc => {
+      expect(acc.balance).toEqual(TRANSACTION_1.amount);
+      cb();
+    });
+
+    account.addTransaction(TRANSACTION_1);
   });
 });
