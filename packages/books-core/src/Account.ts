@@ -1,41 +1,32 @@
-interface ITransaction {
+import { Subject } from 'rxjs';
+
+export type AccountType = 'asset' | 'claim';
+
+export interface IAccountTransaction {
   amount: number;
+  note: string;
 }
 
-type SubscribeFunction = (account: Account) => void;
-
-// TODO This will eventually be replaced via RxJS but I am on a plane
-// TODO without Internet access and cannot install it.
-class Subscribable {
-  subscribers: SubscribeFunction[] = [];
-
-  subscribe(listener: SubscribeFunction) {
-    this.subscribers.push(listener);
-  }
-
-  protected notifySubscribers() {
-    this.subscribers.forEach(s => s(this as any));
-  }
-}
-
-export class Account extends Subscribable {
+export class Account {
   get balance() {
     return this.balanceCached === undefined
       ? (this.balanceCached = this.calculateBalance())
       : this.balanceCached;
   }
-  transactions: ITransaction[] = [];
+  transactions: IAccountTransaction[] = [];
+  transactionStream: Subject<IAccountTransaction> = new Subject();
 
   private balanceCached: number = this.calculateBalance();
 
-  constructor(public accountName: string) {
-    super();
-  }
+  constructor(
+    public accountName: string,
+    public type: AccountType = 'asset'
+  ) {}
 
-  addTransaction(transaction: ITransaction) {
+  addTransaction(transaction: IAccountTransaction) {
     this.transactions.push(transaction);
     this.balanceCached += transaction.amount;
-    this.notifySubscribers();
+    this.transactionStream.next(transaction);
   }
 
   private calculateBalance() {

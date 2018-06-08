@@ -1,8 +1,8 @@
 import { Account } from './Account';
 
 const TEST_ACCOUNT_NAME = 'My Account';
-const TRANSACTION_1 = { amount: 500 };
-const TRANSACTION_2 = { amount: -250 };
+const TRANSACTION_1 = { amount: 500, note: 'test' };
+const TRANSACTION_2 = { amount: -250, note: 'test2' };
 
 describe('Account', () => {
   let account: Account;
@@ -29,8 +29,8 @@ describe('Account', () => {
   });
 
   test('account changes can be subscribed to', cb => {
-    account.subscribe(acc => {
-      expect(acc.balance).toEqual(TRANSACTION_1.amount);
+    account.transactionStream.subscribe(t => {
+      expect(account.balance).toEqual(t.amount);
       cb();
     });
 
