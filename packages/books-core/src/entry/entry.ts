@@ -1,11 +1,12 @@
-import { ITransaction } from '../transaction/transaction';
+export interface IJournalEntryTransaction {
+  accountName: string;
+  amount: number;
+  dateOccurred: Date;
+  memo: string;
+}
 
-export class Entry {
-  public memo: string;
-  public transactions: ITransaction[];
-
-  public constructor({ memo, transactions }) {
-    this.memo = memo;
-    this.transactions = transactions;
-  }
+export interface IJournalEntry {
+  dateOccurred: Date;
+  memo: string;
+  transactions: IJournalEntryTransaction[];
 }
