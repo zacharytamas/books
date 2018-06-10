@@ -1,30 +1,45 @@
-import { ITransaction } from '../transaction/transaction';
-import { Entry } from './entry';
+import { IJournalEntry, IJournalEntryTransaction } from './entry';
 
 export class EntryBuilder {
-  public static start(memo: string) {
-    return new EntryBuilder({ memo });
+  public static start(memo: string, dateOccurred?: Date) {
+    return new EntryBuilder({ memo, dateOccurred });
   }
 
   private memo: string;
-  private transactions: ITransaction[];
+  private transactions: IJournalEntryTransaction[];
+  private dateOccurred: Date;
 
-  public constructor({ memo }) {
+  public constructor({ memo, dateOccurred = new Date() }) {
     this.memo = memo;
+    this.dateOccurred = dateOccurred;
   }
 
-  public build() {
+  public build(): IJournalEntry {
     const memo = this.memo;
     const transactions = this.transactions || [];
 
-    return new Entry({ memo, transactions });
+    return {
+      dateOccurred: this.dateOccurred,
+      memo: this.memo,
+      transactions: this.transactions || []
+    };
   }
 
-  public subtract(accountName: string, amount: number) {
-    return this;
+  public subtract(accountName: string, amount: number, memo?: string) {
+    return this.add(accountName, -amount, memo);
   }
 
-  public add(accountName: string, amount: number) {
+  public add(accountName: string, amount: number, memo?: string) {
+    this.transactions = [
+      ...(this.transactions || []),
+      {
+        accountName,
+        amount,
+        dateOccurred: this.dateOccurred,
+        memo: memo || this.memo
+      }
+    ];
+
     return this;
   }
 }

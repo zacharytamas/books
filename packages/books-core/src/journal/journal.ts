@@ -1,9 +1,9 @@
 import { Account } from '../account/account';
-import { Entry } from '../entry/entry';
+import { IJournalEntry } from '../entry/entry';
 
 export class Journal {
   public accounts: Account[] = [];
-  public entries: Entry[] = [];
+  public entries: IJournalEntry[] = [];
   private accountMap: Map<string, Account> = new Map();
 
   public addAccounts(accounts: Account[]) {
@@ -13,11 +13,31 @@ export class Journal {
     });
   }
 
-  public addEntry(entry: Entry) {
-    this.entries.push(entry);
+  public addEntry(journalEntry: IJournalEntry) {
+    journalEntry.transactions.forEach(txn => {
+      const { accountName, ...accountTransaction } = txn;
+      const account = this.getAccount(accountName);
+
+      if (!account) {
+        throw Error(
+          `Could not add entry to journal because account "${accountName}" was not found.`
+        );
+      }
+
+      account.addTransaction(accountTransaction);
+    });
+
+    this.entries.push(journalEntry);
   }
 
   public getAccount(accountName: string): Account {
     return this.accountMap.get(accountName);
+  }
+
+  public getAccountBalance(accountName: string): number {
+    // TODO This should handle when the account cannot be found. I need to
+    // decide whether to throw anytime anything is wrong or return things
+    // like null.
+    return this.getAccount(accountName).balance;
   }
 }
