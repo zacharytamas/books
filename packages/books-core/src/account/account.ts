@@ -4,13 +4,19 @@ import { ITransaction } from '../transaction/transaction';
  * An Account.
  */
 export class Account {
+  public kind: string;
   public name: string;
   public transactions: ITransaction[] = [];
+
+  public get fullyQualifiedName() {
+    return `${this.kind} ${this.name}`;
+  }
 
   // tslint:disable-next-line:variable-name
   private _balance: number = 0;
 
-  public constructor(name: string) {
+  public constructor(kind: string, name: string) {
+    this.kind = kind;
     this.name = name;
   }
 

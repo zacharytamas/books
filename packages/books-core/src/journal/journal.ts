@@ -8,7 +8,7 @@ export class Journal {
 
   public addAccounts(accounts: Account[]) {
     accounts.forEach(a => {
-      this.accountMap.set(a.name, a);
+      this.accountMap.set(a.fullyQualifiedName, a);
       this.accounts.push(a);
     });
   }

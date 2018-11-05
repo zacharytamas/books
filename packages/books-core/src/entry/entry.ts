@@ -1,8 +1,7 @@
-export interface IJournalEntryTransaction {
+import { ITransaction } from '..';
+
+export interface IJournalEntryTransaction extends ITransaction {
   accountName: string;
-  amount: number;
-  dateOccurred: Date;
-  memo: string;
 }
 
 export interface IJournalEntry {
