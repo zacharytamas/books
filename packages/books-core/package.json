@@ -4,8 +4,8 @@
   "private": true,
   "devDependencies": {
     "jest": "^23.1.0",
-    "ts-jest": "^22.4.6",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.4"
+    "typescript": "^3.2.2"
   }
 }
