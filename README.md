@@ -1,5 +1,7 @@
 # books
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zacharytamas/books.svg)](https://greenkeeper.io/)
+
 ## What is this?
 
 Initially this project is just a learning tool for my Financial Accounting class. To test and improve my learning I am using a TDD approach for writing code from scratch that enforces my understanding.
